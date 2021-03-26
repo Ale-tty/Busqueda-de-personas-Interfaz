@@ -60,6 +60,7 @@ def setup_transcribe_dataloader(cfg, vocabulary):
 #POSTMAN PARA PRUEBAS
 @app.route('/predict', methods=['GET'])
 def predict():
+    '''
     files = ['description.wav']
     for fname, transcription in zip(files, quartznet.transcribe(paths2audio_files=files)):
         print(f"Audio in {fname} was recognized as: {transcription}")
@@ -84,16 +85,16 @@ def predict():
             wer = WER(vocabulary=quartznet.decoder.vocabulary, batch_dim_index=0, use_cer=False, ctc_decode=True)
             hypotheses = wer.ctc_decoder_predictions_tensor(greedy_predictions)
             print(hypotheses)
-            break'''
+            break
 
-    return jsonify({'prediccion' : transcription})
+    return jsonify({'prediccion' : hypotheses})
 
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({'Describe a person as follows' : 'example - a young white girl with blue hair wearing a blue shirt'})
+    return jsonify({'Describe a person as follows' : 'example0 - a y0ung white girl with blue hair wearing a blue shirt'})
 
 
 if __name__ == "__main__":
     quartznet = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name="QuartzNet15x5Base-En")
-    #ort_session = onnxruntime.InferenceSession('models/asr.onnx')
+    ort_session = onnxruntime.InferenceSession('models/asr.onnx')
     app.run(port=9090)
