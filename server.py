@@ -60,8 +60,9 @@ def setup_transcribe_dataloader(cfg, vocabulary):
 #POSTMAN PARA PRUEBAS
 @app.route('/predict', methods=['GET'])
 def predict():
-    '''
+    
     files = ['description.wav']
+    '''
     for fname, transcription in zip(files, quartznet.transcribe(paths2audio_files=files)):
         print(f"Audio in {fname} was recognized as: {transcription}")
     '''
